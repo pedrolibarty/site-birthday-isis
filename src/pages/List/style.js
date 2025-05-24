@@ -114,7 +114,7 @@ export const ListStyled = styled.section`
     button {
       background-color: var(--color-primary);
 
-      width: 200px;
+      width: 250px;
       height: 50px;
 
       display: flex;
