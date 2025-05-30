@@ -7,6 +7,7 @@ export const GuestContext = createContext();
 export const GuestProvider = ({ children }) => {
   const [companions, setCompanions] = useState([]);
   const [originCompanions, setOriginCompanions] = useState([]);
+  const [allCompanions, setAllCompanions] = useState([]);
   const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ export const GuestProvider = ({ children }) => {
       });
 
       if (!res.ok) {
-        toast("Ocorreu um erro!", {
+        toast("Erro ao listar grupos", {
           duration: 4000,
           position: "top-right",
           icon: "⚠️",
@@ -116,9 +117,51 @@ export const GuestProvider = ({ children }) => {
 
       setGuests(data);
     } catch {
-      navigate("/error");
+      toast("Erro ao listar grupos", {
+        duration: 4000,
+        position: "top-right",
+        icon: "⚠️",
+        style: {
+          background: "#FFFFFF",
+          color: "#000",
+        },
+      });
     }
   };
+
+  const getAllCompanions = async () => {
+    try {
+      const res = await fetch(`${api}all/companion`, {
+        method: "GET"
+      })
+
+      if (!res.ok) {
+        toast("Erro ao listar convidados", {
+          duration: 4000,
+          position: "top-right",
+          icon: "⚠️",
+          style: {
+            background: "#FFFFFF",
+            color: "#000",
+          },
+        });
+      }
+
+      const data = await res.json();
+
+      setAllCompanions(data);
+    } catch {
+      toast("Erro ao listar convidados", {
+        duration: 4000,
+        position: "top-right",
+        icon: "⚠️",
+        style: {
+          background: "#FFFFFF",
+          color: "#000",
+        },
+      });
+    }
+  }
 
   return (
     <GuestContext.Provider
@@ -130,6 +173,8 @@ export const GuestProvider = ({ children }) => {
         loading,
         guests,
         getGuests,
+        allCompanions,
+        getAllCompanions
       }}
     >
       {children}
