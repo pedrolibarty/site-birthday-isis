@@ -1,39 +1,25 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { ListStyled } from "./style";
+import { GuestContext } from "../../contexts/GuestContext";
 
 const List = () => {
-  const [guests, setGuests] = useState([
-    {
-      name: "Maria Eduarda",
-      id: 1,
-      status: null,
-    },
-    {
-      name: "Maria Eduarda 2",
-      id: 2,
-      status: null,
-    },
-    {
-      name: "Maria Eduarda 3",
-      id: 3,
-      status: null,
-    },
-  ]);
+  const { companions, setCompanions, updateCompaion } =
+    useContext(GuestContext);
 
   const confirm = (id) => {
-    const updated = guests.map((g) =>
-      g.id === id ? { ...g, status: true } : g
+    const updated = companions.map((g) =>
+      g.id_comp === id ? { ...g, status: true } : g
     );
 
-    setGuests(updated);
+    setCompanions(updated);
   };
 
   const inative = (id) => {
-    const updated = guests.map((g) =>
-      g.id === id ? { ...g, status: false } : g
+    const updated = companions.map((g) =>
+      g.id_comp === id ? { ...g, status: false } : g
     );
 
-    setGuests(updated);
+    setCompanions(updated);
   };
 
   return (
@@ -45,7 +31,7 @@ const List = () => {
       <p>Prepare-se para mergulhar em um mar de alegria!</p>
       <p>
         A nossa Isis vai completar seu primeiro aninho, e queremos muito dividir
-        esse momento mágico com você.{" "}
+        esse momento mágico com você.
       </p>
       <p>
         Não é todo dia que celebramos o primeiro aninho de vida, então venha
@@ -54,9 +40,9 @@ const List = () => {
       <p> Por favor, confirme sua presença!</p>
 
       <ul>
-        {guests.map((g) => {
+        {companions.map((g) => {
           return (
-            <li>
+            <li key={g.id_comp}>
               <div className="content">
                 <div className="name">
                   <img src="/icons/concha-1.png" alt="" />
@@ -67,7 +53,7 @@ const List = () => {
                     Sim
                     <div
                       className={`box ${g.status === true ? "ativo" : ""}`}
-                      onClick={() => confirm(g.id)}
+                      onClick={() => confirm(g.id_comp)}
                     >
                       {g.status === true && (
                         <img src="/icons/icon-yes.png" alt="" />
@@ -78,7 +64,7 @@ const List = () => {
                     Não
                     <div
                       className={`box ${g.status === false ? "inativo" : ""}`}
-                      onClick={() => inative(g.id)}
+                      onClick={() => inative(g.id_comp)}
                     >
                       {g.status === false && (
                         <img src="/icons/icon-no.png" alt="" />
@@ -90,7 +76,7 @@ const List = () => {
             </li>
           );
         })}
-        <button>Confirmar presença!</button>
+        <button onClick={() => updateCompaion()}>Confirmar presença!</button>
       </ul>
     </ListStyled>
   );
