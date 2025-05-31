@@ -84,12 +84,23 @@ export const DashboardStyled = styled.section`
         align-items: center;
         gap: 10px;
 
-        font-size: 23px;
+        font-size: 18px;
 
         img {
-          width: 35px;
+          width: 30px;
         }
       }
+
+      #locate {
+        align-items: flex-start;
+
+        text-decoration: underline;
+        color: var(--color-black);
+      }
+
+      a:visited {
+  color: inherit;
+}
     }
   }
 

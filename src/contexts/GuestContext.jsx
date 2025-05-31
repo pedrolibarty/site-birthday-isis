@@ -7,11 +7,12 @@ export const GuestContext = createContext();
 export const GuestProvider = ({ children }) => {
   const [companions, setCompanions] = useState([]);
   const [originCompanions, setOriginCompanions] = useState([]);
+  const [allCompanions, setAllCompanions] = useState([]);
   const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const api = "http://localhost:3000/api/";
+  const api = "https://api-birthday-isis.vercel.app/api/";
 
   const getCompanions = async (id_guest) => {
     try {
@@ -115,8 +116,165 @@ export const GuestProvider = ({ children }) => {
       const data = await res.json();
 
       setGuests(data);
+      setLoading(false);
     } catch {
       navigate("/error");
+    }
+  };
+
+  const getAllCompanions = async () => {
+    try {
+      const res = await fetch(`${api}all/companion`, {
+        method: "GET",
+      });
+
+      if (!res.ok) {
+        toast("Erro para listar convidados", {
+          duration: 4000,
+          position: "top-right",
+          icon: "⚠️",
+          style: {
+            background: "#FFFFFF",
+            color: "#000",
+          },
+        });
+        return;
+      }
+
+      const data = await res.json();
+
+      setAllCompanions(data);
+      return;
+    } catch (error) {
+      toast("Erro para listar convidados", {
+        duration: 4000,
+        position: "top-right",
+        icon: "⚠️",
+        style: {
+          background: "#FFFFFF",
+          color: "#000",
+        },
+      });
+      return;
+    }
+  };
+
+  const updateGuest = async (id_guest, ind_env) => {
+    try {
+      const res = await fetch(`${api}update/guest`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id_guest, ind_env }),
+      });
+
+      await res.json();
+
+      if (ind_env === true) {
+        toast("Confirmação feita!", {
+          duration: 4000,
+          position: "top-right",
+          icon: "🦀",
+          style: {
+            background: "#FFFFFF",
+            color: "#000",
+          },
+        });
+      } else {
+        toast("Confirmação removida!", {
+          duration: 4000,
+          position: "top-right",
+          icon: "🦀",
+          style: {
+            background: "#FFFFFF",
+            color: "#000",
+          },
+        });
+      }
+
+      return;
+    } catch (error) {
+      toast("Ocorreu um erro!", {
+        duration: 4000,
+        position: "top-right",
+        icon: "⚠️",
+        style: {
+          background: "#FFFFFF",
+          color: "#000",
+        },
+      });
+    }
+  };
+
+  const createCompanions = async (data) => {
+    try {
+      if (!data.agrupamento.name || data.agrupamento.name.trim() === "") {
+        toast("Agrupamento vazio!", {
+          duration: 4000,
+          position: "top-right",
+          icon: "⚠️",
+          style: {
+            background: "#FFFFFF",
+            color: "#000",
+          },
+        });
+        return;
+      }
+
+      if (data.companions.length === 0) {
+        toast("Insira convidados!", {
+          duration: 4000,
+          position: "top-right",
+          icon: "⚠️",
+          style: {
+            background: "#FFFFFF",
+            color: "#000",
+          },
+        });
+        return;
+      }
+
+      const filteredCompanions = data.companions.filter(
+        (name) => name.trim() !== ""
+      );
+
+      if (filteredCompanions.length === 0) {
+        toast("Insira convidados!", {
+          duration: 4000,
+          position: "top-right",
+          icon: "⚠️",
+          style: {
+            background: "#FFFFFF",
+            color: "#000",
+          },
+        });
+        return;
+      }
+
+      const payload = {
+        ...data,
+        companions: filteredCompanions,
+      };
+
+      const res = await fetch(`${api}create/companion`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("Erro ao enviar:", err.error || "Erro desconhecido");
+        return;
+      }
+
+      const result = await res.json();
+      console.log("Sucesso:", result);
+    } catch (error) {
+      console.error("Erro inesperado:", error.message);
     }
   };
 
@@ -130,6 +288,11 @@ export const GuestProvider = ({ children }) => {
         loading,
         guests,
         getGuests,
+        getAllCompanions,
+        allCompanions,
+        setGuests,
+        updateGuest,
+        createCompanions,
       }}
     >
       {children}

@@ -120,7 +120,7 @@ section {
 	display: block;
 }
 
-body {
+body, button {
 	line-height: 1;
 	font-family: 'Montserrat';
 }

@@ -15,15 +15,15 @@ const Dashboard = () => {
         <ul>
           <li>
             <img src="/icons/calender.png" alt="" />
-            02/07/2025
+            20/07/2025
           </li>
           <li>
             <img src="/icons/clock.png" alt="" />
-            20:00h
+            15:00h
           </li>
-          <li>
+          <li id="locate">
             <img src="/icons/locate.png" alt="" />
-            Rua Cinco, n° 323, Chigago - 35047-005
+            <a href="https://maps.app.goo.gl/yCTweCV5fT6DQpFg7" target="_blank">Cerimonial Vereda Elesbão Alexandre, 288 - Nossa Sra. da Conceição, 29176-526 </a>
           </li>
         </ul>
         <div className="alga">
