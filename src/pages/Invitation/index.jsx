@@ -15,7 +15,9 @@ const Invitation = () => {
     Clique no link abaixo para confirmar presença e ver todos os detalhes:
     https://site-birthday-isis.vercel.app/guest/${id_guest}
 
-    Esperamos você! 💖`;
+    Esperamos você! 💖
+    Favor confirmar até dia 30 de junho!
+    `;
 
     navigator.clipboard
       .writeText(texto)
