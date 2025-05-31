@@ -101,7 +101,7 @@ export const GuestProvider = ({ children }) => {
       });
 
       if (!res.ok) {
-        toast("Ocorreu um erro!", {
+        toast("Erro ao listar grupos", {
           duration: 4000,
           position: "top-right",
           icon: "⚠️",
